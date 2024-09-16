@@ -1,79 +1,78 @@
-name: Build and Release pyinit
+name: Release pyinit
+
+permissions:
+  contents: write  # リリースにファイルを追加するための書き込み権限
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*'  # バージョンタグがプッシュされたときにトリガー
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.job.os }}
     strategy:
+      fail-fast: false
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - x86_64-apple-darwin
-          - x86_64-pc-windows-gnu
-        include:
-          - target: x86_64-unknown-linux-gnu
-            file_extension: ""
-          - target: x86_64-apple-darwin
-            file_extension: ""
-          - target: x86_64-pc-windows-gnu
-            file_extension: ".exe"
+        job:
+          - { os: ubuntu-latest  , target: x86_64-unknown-linux-gnu       , use-cross: false , extension: ""   }
+          - { os: ubuntu-latest  , target: x86_64-unknown-linux-musl      , use-cross: true  , extension: ""   }
+          - { os: macos-latest   , target: x86_64-apple-darwin            , use-cross: false , extension: ""   }
+          - { os: macos-latest   , target: aarch64-apple-darwin           , use-cross: false , extension: ""   }
+          - { os: windows-latest , target: x86_64-pc-windows-msvc         , use-cross: false , extension: .exe }
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v2  # コードをチェックアウト
 
-      - name: Install dependencies for Windows cross-compilation
-        if: matrix.target == 'x86_64-pc-windows-gnu'
-        run: sudo apt-get install mingw-w64
+      - name: Extract crate information
+        shell: bash
+        run: |
+          echo "PROJECT_NAME=$(sed -n 's/^name = \"\(.*\)\"/\1/p' Cargo.toml | head -n1)" >> $GITHUB_ENV
+        # Cargo.toml からプロジェクト名を抽出し、後のステップで使うために環境変数にセット
 
-      - name: Install Zig for macOS cross-compilation
-        if: matrix.target == 'x86_64-apple-darwin'
-        run: sudo apt-get install zig
-
-      - name: Set up Rust
+      - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: ${{ matrix.target }}
+          target: ${{ matrix.job.target }}  # ターゲットごとにRustツールチェインをインストール
+          override: true
           profile: minimal
 
-      - name: Build the binary
-        run: |
-          if [[ "${{ matrix.target }}" == "x86_64-apple-darwin" ]]; then
-            zig cc -target x86_64-macos -o target/${{ matrix.target }}/release/pyinit target/${{ matrix.target }}/release/pyinit
-          else
-            cargo build --release --target ${{ matrix.target }}
-          fi
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: ${{ matrix.job.use-cross }}  # 必要に応じてcrossを使う
+          command: build
+          args: --release --target ${{ matrix.job.target }}  # リリースビルド
 
-      - name: Create compressed archive
+      - name: Rename artifacts
+        shell: bash
         run: |
-          zip pyinit-${{ matrix.target }}-${{ github.ref_name }} target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
+          mv target/${{ matrix.job.target }}/release/${{ env.PROJECT_NAME }}{,-${{ github.ref_name }}-${{ matrix.job.target }}${{ matrix.job.extension }}}
+        # ビルドしたバイナリをリネーム
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
-          name: pyinit-${{ matrix.target }}-${{ github.ref_name }}
-          path: pyinit-${{ matrix.target }}-${{ github.ref_name }}.zip
+          name: pyinit-${{ matrix.job.target }}-${{ github.ref_name }}
+          path: target/${{ matrix.job.target }}/release/${{ env.PROJECT_NAME }}-${{ github.ref_name }}-${{ matrix.job.target }}${{ matrix.job.extension }}
+        # ビルドされたバイナリをGitHub Actionsのアーティファクトとしてアップロード
 
   release:
     name: Release pyinit binaries
     runs-on: ubuntu-latest
-    needs: build
+    needs: build  # ビルドが完了した後に実行
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           path: .
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Release
+        uses: softprops/action-gh-release@v1  # GitHubリリースを作成
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHubのトークンを使って認証
         with:
           files: |
-            pyinit-x86_64-unknown-linux-gnu-*.zip
-            pyinit-x86_64-apple-darwin-*.zip
-            pyinit-x86_64-pc-windows-gnu-*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            target/*/release/${{ env.PROJECT_NAME }}-${{ github.ref_name }}-*.*
