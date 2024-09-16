@@ -1,0 +1,66 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            file_extension: ""
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            file_extension: ""
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            file_extension: ".exe"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          profile: minimal
+
+      - name: Build the binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Create compressed archive
+        run: |
+          zip pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }} target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }}
+          path: pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }}.zip
+
+  release:
+    name: Release pyinit binaries
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            pyinit-ubuntu-latest-*.zip
+            pyinit-macos-latest-*.zip
+            pyinit-windows-latest-*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

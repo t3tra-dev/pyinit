@@ -1,0 +1,104 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) {year} {author}
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+
+This version of the GNU General Public License incorporates
+the terms and conditions of version 2 of the License, supplemented
+by additional permissions. The GPL version 2 is known as the
+"GPLv2". The terms and conditions of this version apply to the
+Code, except that where the GPLv2 allows the licensee to impose
+additional restrictions, the terms of this version do not permit
+the licensee to do so.
+
+TERMS AND CONDITIONS
+
+0. Definitions
+
+  1. "This License" refers to version 3 of the GNU General Public
+     License.
+
+  2. "Copyright" also means copyright-like laws that apply to
+     other kinds of works, such as semiconductor masks.
+
+  3. "The Program" refers to any copyrightable work licensed
+     under this License. Each licensee is addressed as "you".
+
+  4. "The General Public" refers to all the people who use or
+     have access to the Program.
+
+  5. "You" refers to any person who copies, distributes, or
+     modifies the Program.
+
+  6. "Source Code" refers to the preferred form of the Program for
+     making modifications.
+
+  7. "Object Code" refers to any non-source form of the Program.
+
+  8. "Convey" means to provide or distribute.
+
+  9. "Distribution" means providing the Program to anyone.
+
+  10. "Modified Version" means a version of the Program that has
+      been changed, or made, to adapt to a new purpose, or that
+      includes new features.
+
+  11. "User" refers to anyone who uses the Program.
+
+  12. "Licensee" refers to any person or entity to whom the License
+      is granted.
+
+  13. "Licensor" refers to the author or copyright holder who
+      grants the License.
+
+  14. "Term" refers to the period of time during which this
+      License is in effect.
+
+  15. "Time" means the moment at which a certain event occurs.
+
+1. Source Code
+
+  The source code of the Program must be made available to
+  everyone who receives a copy of the Program. You must provide
+  instructions for obtaining the source code.
+
+2. Modified Versions
+
+  If you modify the Program, you must provide the modified source
+  code under this License. You must keep the source code available
+  and provide instructions for obtaining the modified source code.
+
+3. Copyleft
+
+  You must keep this License and its terms intact when you convey
+  the Program or a modified version of the Program. You may not
+  impose additional restrictions on the Program.
+
+4. Accepting the License
+
+  You accept this License by copying, distributing, or modifying
+  the Program.
+
+5. Termination
+
+  You may terminate this License if you fail to comply with its
+  terms. Your license is automatically reinstated if you correct
+  the violation within 30 days.
+
+6. Warranty
+
+  The Program is provided "as is" without warranty of any kind.
+
+7. Governing Law
+
+  This License is governed by the laws of the United States.
+
+8. Additional Permissions
+
+  The Licensor may grant additional permissions. Such permissions
+  should be included in the License.
+
+For further details, refer to the GNU General Public License
+Version 3, 29 June 2007.
