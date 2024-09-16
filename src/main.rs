@@ -181,7 +181,7 @@ fn create_project_files(name: &str, desc: &str, author: &str, license: &str, cus
 
 fn main() {
     let matches = Command::new("pyinit")
-        .version("1.0")
+    .version(env!("CARGO_PKG_VERSION"))
         .about("CLI tool to create Python library scaffolding")
         .arg(Arg::new("name").short('n').long("name").required(false).help("Library name"))
         .arg(Arg::new("description").short('d').long("description").required(false).help("Library description"))
