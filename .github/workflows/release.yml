@@ -1,0 +1,66 @@
+name: Build and Release pyinit CLI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # バージョンタグがプッシュされたときに実行
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            file_extension: ""
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            file_extension: ""
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            file_extension: ".exe"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+
+      - name: Build the CLI
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Archive the build output
+        run: |
+          mkdir -p dist
+          zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: pyinit-${{ matrix.os }}-${{ github.ref_name }}
+          path: dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
