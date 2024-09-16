@@ -4,7 +4,7 @@
 
 {desc}
 
-:copyright: (c) {year} {name}
+:copyright: (c) {year} {author}
 :license: {license}, see LICENSE for more details.
 
 """
