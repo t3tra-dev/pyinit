@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release pyinit
 
 on:
   push:
@@ -10,20 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-apple-darwin
+          - x86_64-pc-windows-gnu
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+          - target: x86_64-unknown-linux-gnu
             file_extension: ""
-          - os: macos-latest
-            target: x86_64-apple-darwin
+          - target: x86_64-apple-darwin
             file_extension: ""
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
+          - target: x86_64-pc-windows-gnu
             file_extension: ".exe"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Install dependencies for Windows cross-compilation
+        if: matrix.target == 'x86_64-pc-windows-gnu'
+        run: sudo apt-get install mingw-w64
+
+      - name: Install Zig for macOS cross-compilation
+        if: matrix.target == 'x86_64-apple-darwin'
+        run: sudo apt-get install zig
 
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
@@ -32,24 +40,23 @@ jobs:
           target: ${{ matrix.target }}
           profile: minimal
 
-      # Windows環境にVisual Studio Build Toolsをインストール
-      - name: Install Visual Studio Build Tools (Windows only)
-        if: matrix.os == 'windows-latest'
-        run: |
-          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
-
       - name: Build the binary
-        run: cargo build --release --target ${{ matrix.target }}
+        run: |
+          if [[ "${{ matrix.target }}" == "x86_64-apple-darwin" ]]; then
+            zig cc -target x86_64-macos -o target/${{ matrix.target }}/release/pyinit target/${{ matrix.target }}/release/pyinit
+          else
+            cargo build --release --target ${{ matrix.target }}
+          fi
 
       - name: Create compressed archive
         run: |
-          zip pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }} target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
+          zip pyinit-${{ matrix.target }}-${{ github.ref_name }} target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }}
-          path: pyinit-${{ matrix.os }}-${{ matrix.target }}-${{ github.ref_name }}.zip
+          name: pyinit-${{ matrix.target }}-${{ github.ref_name }}
+          path: pyinit-${{ matrix.target }}-${{ github.ref_name }}.zip
 
   release:
     name: Release pyinit binaries
@@ -65,8 +72,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            pyinit-ubuntu-latest-*.zip
-            pyinit-macos-latest-*.zip
-            pyinit-windows-latest-*.zip
+            pyinit-x86_64-unknown-linux-gnu-*.zip
+            pyinit-x86_64-apple-darwin-*.zip
+            pyinit-x86_64-pc-windows-gnu-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
