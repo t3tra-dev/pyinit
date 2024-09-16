@@ -32,6 +32,12 @@ jobs:
           target: ${{ matrix.target }}
           profile: minimal
 
+      # Windows環境にVisual Studio Build Toolsをインストール
+      - name: Install Visual Studio Build Tools (Windows only)
+        if: matrix.os == 'windows-latest'
+        run: |
+          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
+
       - name: Build the binary
         run: cargo build --release --target ${{ matrix.target }}
 
