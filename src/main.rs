@@ -1,8 +1,13 @@
 use clap::{Command, Arg};
 use regex::Regex;
 use reqwest::blocking::get;
-use std::{fs, process};
+use std::process;
 use chrono::Datelike;
+use include_dir::{include_dir, Dir};
+use std::str;
+
+// テンプレートディレクトリを埋め込む
+static TEMPLATES_DIR: Dir = include_dir!("././templates");
 
 // バリデーション関数（半角英数字チェック）
 fn validate_alphanumeric(input: &str) -> bool {
@@ -19,27 +24,27 @@ fn is_name_available_on_pypi(name: &str) -> bool {
     }
 }
 
-// テンプレートファイルを読み込む関数
+// バイナリに埋め込まれたテンプレートファイルを読み込む関数
 fn read_template(file_path: &str) -> String {
-    fs::read_to_string(file_path).unwrap_or_else(|_| {
-        eprintln!("Error: Could not read the template file '{}'.", file_path);
+    let file = TEMPLATES_DIR.get_file(file_path).unwrap_or_else(|| {
+        eprintln!("Error: Could not find the template file '{}'.", file_path);
         process::exit(1);
-    })
+    });
+
+    // ファイルの内容をUTF-8の文字列に変換して返す
+    str::from_utf8(file.contents())
+        .expect("Error: Could not read the file contents.")
+        .to_string()
 }
 
 // `templates/licenses`からライセンスファイルを取得し、候補を作成する関数
 fn get_license_options() -> Vec<String> {
-    let license_dir = "templates/licenses";
+    let license_dir = TEMPLATES_DIR.get_dir("licenses").expect("Could not read licenses directory");
     let mut licenses = Vec::new();
 
     // ディレクトリ内のファイルを取得
-    for entry in fs::read_dir(license_dir).unwrap_or_else(|_| {
-        eprintln!("Error: Could not read licenses directory '{}'.", license_dir);
-        process::exit(1);
-    }) {
-        let entry = entry.unwrap();
-        let file_name = entry.file_name().into_string().unwrap();
-
+    for file in license_dir.files() {
+        let file_name = file.path().file_name().unwrap().to_str().unwrap().to_string();
         // ドットで始まる隠しファイルを除外
         if !file_name.starts_with('.') {
             licenses.push(file_name);
@@ -97,7 +102,7 @@ fn select_license(default_value: Option<String>) -> String {
         }
     }
 
-    let licenses = get_license_options(); // ファイルから取得したライセンスリストを使用
+    let licenses = get_license_options(); // バイナリに埋め込まれたライセンスリストを使用
     let selection = dialoguer::Select::new()
         .with_prompt("Choose a license")
         .items(&licenses)
@@ -122,11 +127,8 @@ fn create_project_files(name: &str, desc: &str, author: &str, license: &str, cus
     let project_dir = format!("./{}", name);
     let module_dir = format!("{}/{}", project_dir, name);
     let tests_dir = format!("{}/tests", project_dir);
-    fs::create_dir_all(&module_dir).expect("Failed to create directories.");
-    fs::create_dir_all(&tests_dir).expect("Failed to create directories.");
-
-    // テンプレートファイルのパス
-    let template_path = "templates/";
+    std::fs::create_dir_all(&module_dir).expect("Failed to create directories.");
+    std::fs::create_dir_all(&tests_dir).expect("Failed to create directories.");
 
     // ファイルの作成
     let license_file = format!("{}/LICENSE", project_dir);
@@ -140,48 +142,48 @@ fn create_project_files(name: &str, desc: &str, author: &str, license: &str, cus
     let license_content = if license == "custom" {
         custom_license.unwrap().to_string()
     } else {
-        let license_template = format!("{}licenses/{}", template_path, license);
+        let license_template = format!("licenses/{}", license);
         let mut license_text = read_template(&license_template);
         license_text = license_text.replace("{year}", &current_year);
         license_text = license_text.replace("{author}", author);
         license_text
     };
-    fs::write(&license_file, license_content).expect("Failed to create LICENSE file.");
+    std::fs::write(&license_file, license_content).expect("Failed to create LICENSE file.");
 
     // READMEテンプレートの読み込みと置換
-    let readme_template = read_template(&format!("{}README.md", template_path));
+    let readme_template = read_template("README.md");
     let readme_content = readme_template.replace("{name}", name).replace("{desc}", desc);
-    fs::write(&readme_file, readme_content).expect("Failed to create README.md file.");
+    std::fs::write(&readme_file, readme_content).expect("Failed to create README.md file.");
 
     // __init__.pyテンプレートの読み込みと置換
-    let init_template = read_template(&format!("{}__init__.py", template_path));
+    let init_template = read_template("__init__.py");
     let init_content = init_template
         .replace("{name}", name)
         .replace("{desc}", desc)
         .replace("{author}", author)
         .replace("{license}", license)
         .replace("{year}", &current_year);
-    fs::write(&init_file, init_content).expect("Failed to create __init__.py file.");
+    std::fs::write(&init_file, init_content).expect("Failed to create __init__.py file.");
 
     // requirements.txtの作成
-    let requirements_template = read_template(&format!("{}requirements.txt", template_path));
-    fs::write(&requirements_file, requirements_template).expect("Failed to create requirements.txt file.");
+    let requirements_template = read_template("requirements.txt");
+    std::fs::write(&requirements_file, requirements_template).expect("Failed to create requirements.txt file.");
 
     // setup.pyのテンプレートを読み込み、変数置換
-    let setup_template = read_template(&format!("{}setup.py", template_path));
+    let setup_template = read_template("setup.py");
     let setup_content = setup_template
         .replace("{name}", name)
         .replace("{desc}", desc)
         .replace("{author}", author)
         .replace("{license}", license);
-    fs::write(&setup_file, setup_content).expect("Failed to create setup.py file.");
+    std::fs::write(&setup_file, setup_content).expect("Failed to create setup.py file.");
 
     println!("Project files created successfully.");
 }
 
 fn main() {
     let matches = Command::new("pyinit")
-    .version(env!("CARGO_PKG_VERSION"))
+        .version(env!("CARGO_PKG_VERSION"))
         .about("CLI tool to create Python library scaffolding")
         .arg(Arg::new("name").short('n').long("name").required(false).help("Library name"))
         .arg(Arg::new("description").short('d').long("description").required(false).help("Library description"))
