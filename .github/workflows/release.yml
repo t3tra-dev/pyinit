@@ -37,16 +37,16 @@ jobs:
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Archive the build output (Linux/macOS)
-        if: runner.os != 'Windows'
+        if: matrix.os != 'windows-latest'
         run: |
           mkdir -p dist
           zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
 
       - name: Archive the build output (Windows)
-        if: runner.os == 'Windows'
+        if: matrix.os == 'windows-latest'
         run: |
           mkdir -p dist
-          Compress-Archive -Path target\${{ matrix.target }}\release\pyinit${{ matrix.file_extension }} -DestinationPath dist\pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip
+          powershell Compress-Archive -Path target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }} -DestinationPath dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
