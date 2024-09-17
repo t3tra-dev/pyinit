@@ -2,90 +2,171 @@
 
 # pyinit
 
-`pyinit`は、Pythonライブラリプロジェクトの雛形を作成するためのコマンドラインツールです。新しいPythonライブラリを素早くセットアップするための基本的なファイルと構造化されたディレクトリレイアウトを提供します。
+`pyinit`は、Pythonライブラリプロジェクトを迅速にセットアップするためのコマンドラインツールです。`README.md`、`LICENSE`、`setup.py`など、ライブラリ開発に必要なファイルを自動で生成し、開発者がプロジェクト構築にかかる手間を省きます。
+
+## 特徴
+
+- Pythonライブラリプロジェクトのディレクトリ構造を自動生成
+- `README.md`、`LICENSE`、`__init__.py`、`setup.py`、`requirements.txt`などの重要ファイルを作成
+- 柔軟なカスタムテンプレートのサポート
+- Linux、macOS、Windowsをサポートするクロスプラットフォーム対応
+- インタラクティブなプロンプトとコマンドライン引数での高速セットアップを提供
 
 ## インストール方法
 
-### macOS、Linux、およびWindows
+### Linux
 
-リポジトリの[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から、macOS、Linux、Windows向けのビルド済みバイナリをダウンロードできます。
+`pyinit`をLinuxにインストールするには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードし、バイナリを`PATH`にあるディレクトリに移動します。
 
-1. **該当するバイナリをダウンロード**します。
-2. **バイナリを解凍**します（圧縮形式の場合）。
-3. **バイナリを移動**します。macOSとLinuxでは`/usr/local/bin`、Windowsでは`C:\Program Files`などのPATHに含まれるディレクトリに移動します。
+```bash
+wget https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-linux-latest-v0.1.0.zip
+unzip pyinit-linux-latest-v0.1.0.zip
+chmod +x pyinit
+sudo mv pyinit /usr/local/bin/
+```
 
-### ローカルビルド
+`pyinit`を実行して使い始めます:
 
-ソースから`pyinit`をローカルでビルドするには、以下の手順に従ってください。
+```bash
+pyinit --help
+```
 
-1. **リポジトリをクローン**します:
+### macOS
 
-    ```bash
-    git clone https://github.com/t3tra-dev/pyinit.git
-    cd pyinit
-    ```
+macOS向けに`pyinit`をインストールするには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードし、バイナリを`PATH`にあるディレクトリに移動します。
 
-2. **Rustツールチェインをインストール**します。未インストールの場合は、[https://rustup.rs](https://rustup.rs) からRustをインストールしてください。
+```bash
+curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-macos-latest-v0.1.0.zip
+unzip pyinit-macos-latest-v0.1.0.zip
+chmod +x pyinit
+sudo mv pyinit /usr/local/bin/
+```
 
-3. **バイナリをビルド**します:
+`pyinit`を実行して使い始めます:
 
-    - macOSとLinux:
+```bash
+pyinit --help
+```
 
-        ```bash
-        cargo build --release
-        ```
+### Windows
 
-    - Windows:
+Windowsで`pyinit`を使用するには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードして解凍します。
 
-        ```bash
-        cargo build --release --target x86_64-pc-windows-msvc
-        ```
+```bash
+Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-windows-latest-v0.1.0.zip -OutFile pyinit.zip
+Expand-Archive -Path pyinit.zip -DestinationPath .
+```
 
-4. **バイナリを探します**。`target/release`ディレクトリ（Windowsの場合は`target\x86_64-pc-windows-msvc\release`）内にあります。
+以下の手順で`pyinit`を`PATH`に追加します：
 
-5. **バイナリを移動**します。システムのPATHに含まれるディレクトリに移動します。
+1. 「このPC」を右クリックし、「プロパティ」を選択
+2. 「システムの詳細設定」をクリックし、「環境変数」を選択
+3. 「システム環境変数」の中から`Path`を探し、選択後「編集」をクリック
+4. 「新規」をクリックし、`pyinit.exe`があるパスを追加
+5. すべてのウィンドウで「OK」をクリックして閉じる
 
-## 使い方
+これでコマンドラインから`pyinit`が実行できるようになります：
 
-`pyinit`を使用するには、以下のコマンドを実行します:
+```bash
+pyinit --help
+```
+
+## ローカルでのビルド方法
+
+`pyinit`をソースコードからローカル環境でビルドするには、Rustがインストールされている必要があります。
+
+### 前提条件
+
+- [Rust](https://www.rust-lang.org/tools/install)がシステムにインストールされていること
+
+### ビルド手順
+
+1. リポジトリをクローンします：
+
+```bash
+git clone https://github.com/t3tra-dev/pyinit.git
+cd pyinit
+```
+
+2. プロジェクトをビルドします：
+
+```bash
+cargo build --release
+```
+
+3. バイナリを`PATH`内のディレクトリに移動します：
+
+```bash
+sudo mv target/release/pyinit /usr/local/bin/
+```
+
+これで、`pyinit`が実行できるようになります：
+
+```bash
+pyinit --help
+```
+
+## 使用方法
+
+`pyinit`は、対話形式およびコマンドライン引数を使用して非対話形式で実行できます。
+
+### コマンドライン引数
+
+```bash
+pyinit [OPTIONS]
+```
+
+#### オプション
+
+- `--name`, `-n`: Pythonライブラリの名前を指定
+- `--description`, `-d`: ライブラリの説明を指定
+- `--author`, `-a`: 作者の名前を指定
+- `--license`, `-l`: ライセンスの種類を指定（MIT、GPL、Apache-2.0、またはcustom）
+- `--help`: CLIのヘルプ情報を表示
+
+#### 使用例
+
+インタラクティブにPythonライブラリプロジェクトを作成するには、以下のコマンドを実行します：
 
 ```bash
 pyinit
 ```
 
-### コマンドライン引数
+プロジェクト名や説明、作者、ライセンスを尋ねられるので、入力して進みます。非対話形式でプロジェクトを作成する場合は、コマンドライン引数を使用します：
 
-- `--name`, `-n`: Pythonライブラリの名前。（対話的に指定しない場合は必須）
-- `--description`, `-d`: ライブラリの簡単な説明。（オプション、空白でも可）
-- `--author`, `-a`: 作者の名前。（対話的に指定しない場合は必須）
-- `--license`, `-l`: ライセンスの種類。（対話的に指定しない場合は必須。`templates/licenses/`内のオプションが使用できます）
+```bash
+pyinit --name mylib --description "A Python library for awesome features" --author "John Doe" --license MIT
+```
 
-### 例
+これにより、以下のディレクトリ構造が生成されます：
 
-1. **対話モード:**
+```
+mylib/
+├── LICENSE
+├── README.md
+├── mylib/
+│   ├── __init__.py
+├── requirements.txt
+├── setup.py
+└── tests/
+```
 
-    単に`pyinit`を実行し、プロンプトに従って対話的に新しいPythonライブラリプロジェクトをセットアップします。
+### ライセンスの選択
 
-2. **対話的でないモード（すべての必須引数を指定する場合）:**
+ライセンスに`custom`を選んだ場合、カスタムライセンステキストを入力するか、空白のままにすることができます。それ以外の場合は、選択したライセンスに基づいて`LICENSE`ファイルが自動的に生成されます。
 
-    ```bash
-    pyinit --name my_library --author JohnDoe --license MIT
-    ```
+## コントリビューティングとサポート
 
-3. **対話的でないモード（オプションの引数も指定する場合）:**
+`pyinit`への貢献は大歓迎です！以下の手順に従って貢献できます：
 
-    ```bash
-    pyinit --name my_library --description "サンプルPythonライブラリ" --author JohnDoe --license MIT
-    ```
+1. リポジトリをフォークします：[https://github.com/t3tra-dev/pyinit](https://github.com/t3tra-dev/pyinit)
+2. フィーチャーブランチを作成します：`git checkout -b feature/your-feature`
+3. 変更をコミットします：`git commit -m 'Add a new feature'`
+4. ブランチをプッシュします：`git push origin feature/your-feature`
+5. プルリクエストを送信します。
 
-## ライセンス
+サポートや質問については、リポジトリの[Issuesセクション](https://github.com/t3tra-dev/pyinit/issues)に問題を報告してください。
 
-`pyinit`はMITライセンスの条件の下でライセンスされています。詳細については、[LICENSE](LICENSE)ファイルをご覧ください。
+---
 
-## 貢献
-
-貢献は歓迎します！提案や改善がある場合は、[GitHub](https://github.com/t3tra-dev/pyinit/issues)で問題を開くか、プルリクエストを送信してください。
-
-## サポート
-
-サポートが必要な場合は、[GitHub](https://github.com/t3tra-dev/pyinit/issues)で問題を開いてください。
+`pyinit`はMITライセンスの下で提供されています。詳細については[LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE)ファイルをご覧ください。

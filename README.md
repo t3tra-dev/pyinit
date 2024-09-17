@@ -2,90 +2,171 @@
 
 # pyinit
 
-`pyinit` is a command-line tool for creating boilerplate Python library projects. It helps you quickly set up a new Python library with essential files and a structured directory layout.
+`pyinit` is a command-line tool designed to help developers quickly scaffold Python library projects. This tool generates essential files like `README.md`, `LICENSE`, `setup.py`, and more, allowing developers to focus on coding without worrying about project setup.
+
+## Features
+
+- Automatically creates Python library project structure.
+- Generates essential files such as `README.md`, `LICENSE`, `__init__.py`, `setup.py`, and `requirements.txt`.
+- Supports custom templates for flexibility.
+- Cross-platform: Works on Linux, macOS, and Windows.
+- Command-line interface with interactive prompts and support for command-line arguments for faster project initialization.
 
 ## Installation
 
-### macOS, Linux, and Windows
+### Linux
 
-You can download pre-built binaries for macOS, Linux, and Windows from the [Releases page](https://github.com/t3tra-dev/pyinit/releases) of this repository.
+To install `pyinit` on Linux, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and move the binary to a directory in your `PATH`.
 
-1. **Download the appropriate binary** for your operating system.
-2. **Extract the binary** (if it's in a compressed format).
-3. **Move the binary** to a directory included in your system's PATH, such as `/usr/local/bin` on macOS and Linux or `C:\Program Files` on Windows.
+```bash
+wget https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-linux-latest-v0.1.0.zip
+unzip pyinit-linux-latest-v0.1.0.zip
+chmod +x pyinit
+sudo mv pyinit /usr/local/bin/
+```
 
-### Local Build
+Now you can run `pyinit`:
 
-To build `pyinit` locally from source, follow these steps:
+```bash
+pyinit --help
+```
 
-1. **Clone the repository:**
+### macOS
 
-    ```bash
-    git clone https://github.com/t3tra-dev/pyinit.git
-    cd pyinit
-    ```
+For macOS, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and move the binary to your `PATH`.
 
-2. **Install Rust toolchain** if not already installed. Visit [https://rustup.rs](https://rustup.rs) to install Rust.
+```bash
+curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-macos-latest-v0.1.0.zip
+unzip pyinit-macos-latest-v0.1.0.zip
+chmod +x pyinit
+sudo mv pyinit /usr/local/bin/
+```
 
-3. **Build the binary:**
+Now you can run `pyinit`:
 
-    - On macOS and Linux:
+```bash
+pyinit --help
+```
 
-        ```bash
-        cargo build --release
-        ```
+### Windows
 
-    - On Windows:
+For Windows, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and extract it:
 
-        ```bash
-        cargo build --release --target x86_64-pc-windows-msvc
-        ```
+```bash
+Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-windows-latest-v0.1.0.zip -OutFile pyinit.zip
+Expand-Archive -Path pyinit.zip -DestinationPath .
+```
 
-4. **Locate the binary** in the `target/release` directory (or `target\x86_64-pc-windows-msvc\release` for Windows).
+Add the binary to your `PATH` by following these steps:
 
-5. **Move the binary** to a directory included in your system's PATH.
+1. Right-click "This PC" and select "Properties."
+2. Click "Advanced system settings" and go to "Environment Variables."
+3. Under "System variables," select `Path` and click "Edit."
+4. Click "New" and add the path where `pyinit.exe` is located.
+5. Click "OK" to close all windows.
+
+You can now run `pyinit` from the command line:
+
+```bash
+pyinit --help
+```
+
+## Building Locally
+
+To build `pyinit` from source locally, you need to have Rust installed.
+
+### Prerequisites
+
+- Install [Rust](https://www.rust-lang.org/tools/install) on your system.
+
+### Build steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/t3tra-dev/pyinit.git
+cd pyinit
+```
+
+2. Build the project:
+
+```bash
+cargo build --release
+```
+
+3. Move the binary to a directory in your `PATH`:
+
+```bash
+sudo mv target/release/pyinit /usr/local/bin/
+```
+
+Now you can run `pyinit`:
+
+```bash
+pyinit --help
+```
 
 ## Usage
 
-To use `pyinit`, you can run the following command:
+`pyinit` can be used interactively or non-interactively by providing command-line arguments.
+
+### Command-line Arguments
+
+```bash
+pyinit [OPTIONS]
+```
+
+#### Options
+
+- `--name`, `-n`: Specify the name of the Python library.
+- `--description`, `-d`: Provide a description for the library.
+- `--author`, `-a`: Specify the author's name.
+- `--license`, `-l`: Choose the license type (MIT, GPL, Apache-2.0, or custom).
+- `--help`: Display help information about the CLI.
+
+#### Example
+
+To create a Python library project interactively, run:
 
 ```bash
 pyinit
 ```
 
-### Command-Line Arguments
+You'll be prompted to enter the project details such as the name, description, author, and license. If you want to skip the interactive mode, you can use command-line arguments:
 
-- `--name`, `-n`: The name of the Python library. (Required if not specified interactively)
-- `--description`, `-d`: A brief description of the library. (Optional, can be left empty)
-- `--author`, `-a`: The author's name. (Required if not specified interactively)
-- `--license`, `-l`: The license type. (Required if not specified interactively. Available options are listed in `templates/licenses/`)
+```bash
+pyinit --name mylib --description "A Python library for awesome features" --author "John Doe" --license MIT
+```
 
-### Examples
+This will generate the following directory structure:
 
-1. **Interactive Mode:**
+```
+mylib/
+├── LICENSE
+├── README.md
+├── mylib/
+│   ├── __init__.py
+├── requirements.txt
+├── setup.py
+└── tests/
+```
 
-    Simply run `pyinit` and follow the prompts to set up a new Python library project interactively.
+### License Selection
 
-2. **Non-Interactive Mode with All Required Arguments:**
+When selecting `custom` as the license type, you'll be prompted to enter custom license text or leave it blank. Otherwise, the selected license will automatically populate the `LICENSE` file.
 
-    ```bash
-    pyinit --name my_library --author JohnDoe --license MIT
-    ```
+## Contributing and Support
 
-3. **Non-Interactive Mode with Optional Arguments:**
+We welcome contributions! Please follow these steps to contribute:
 
-    ```bash
-    pyinit --name my_library --description "A sample Python library" --author JohnDoe --license MIT
-    ```
+1. Fork the repository: [https://github.com/t3tra-dev/pyinit](https://github.com/t3tra-dev/pyinit).
+2. Create a feature branch: `git checkout -b feature/your-feature`.
+3. Commit your changes: `git commit -m 'Add a new feature'`.
+4. Push to the branch: `git push origin feature/your-feature`.
+5. Open a Pull Request.
 
-## License
+For any questions or support, feel free to open an issue in the repository's [Issues section](https://github.com/t3tra-dev/pyinit/issues).
 
-`pyinit` is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
+---
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request if you have any suggestions or improvements.
-
-## Support
-
-For support, please open an issue on [GitHub](https://github.com/t3tra-dev/pyinit/issues).
+`pyinit` is licensed under the MIT License. See the [LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE) file for more details.
