@@ -33,11 +33,10 @@ jobs:
           target: ${{ matrix.target }}
           override: true
 
-      - name: Debug for runner.os
-        run: echo "Running on ${{ runner.os }}"
-
       - name: Build the CLI
-        run: cargo build --release --target ${{ matrix.target }}
+        run: |
+          echo "Running on ${{ runner.os }}"
+          cargo build --release --target ${{ matrix.target }}
 
       - name: Archive the build output (Linux/macOS)
         if: runner.os != 'Windows'
