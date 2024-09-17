@@ -35,7 +35,7 @@ jobs:
 
       - name: Build the CLI
         run: |
-          echo "Running on ${{ runner.os }}"
+          Write-Host "Running on ${{ runner.os }}"
           cargo build --release --target ${{ matrix.target }}
 
       - name: Archive the build output (Linux/macOS)
