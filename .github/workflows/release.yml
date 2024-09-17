@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -44,9 +47,10 @@ jobs:
 
       - name: Archive the build output (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
         run: |
-          mkdir dist
-          powershell Compress-Archive -Path target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }} -DestinationPath dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip
+          New-Item -ItemType Directory -Force -Path dist
+          Compress-Archive -Path "target\${{ matrix.target }}\release\pyinit${{ matrix.file_extension }}" -DestinationPath "dist\pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
@@ -63,11 +67,11 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          path: dist
+          path: .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/*.zip
+          files: pyinit-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
