@@ -39,11 +39,15 @@ jobs:
       - name: Build the CLI
         run: cargo build --release --target ${{ matrix.target }}
 
+      - name: Set executable permissions (Linux/macOS)
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: chmod +x target/${{ matrix.target }}/release/pyinit
+
       - name: Archive the build output (Linux/macOS)
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
           mkdir -p dist
-          zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
+          zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip target/${{ matrix.target }}/release/pyinit
 
       - name: Archive the build output (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
