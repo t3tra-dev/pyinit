@@ -145,7 +145,7 @@ mylib/
 ├── LICENSE
 ├── README.md
 ├── mylib/
-│   ├── __init__.py
+│   └── __init__.py
 ├── requirements.txt
 ├── setup.py
 └── tests/
