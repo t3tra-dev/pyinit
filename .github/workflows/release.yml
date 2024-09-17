@@ -3,7 +3,7 @@ name: Build and Release pyinit CLI
 on:
   push:
     tags:
-      - 'v*.*.*'  # バージョンタグがプッシュされたときに実行
+      - 'v*.*.*'
 
 jobs:
   build:
