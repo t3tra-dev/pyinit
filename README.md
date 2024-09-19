@@ -121,7 +121,7 @@ pyinit [OPTIONS]
 - `--name`, `-n`: Specify the name of the Python library.
 - `--description`, `-d`: Provide a description for the library.
 - `--author`, `-a`: Specify the author's name.
-- `--license`, `-l`: Choose the license type (MIT, GPL, Apache-2.0, or custom).
+- `--license`, `-l`: Choose the license type (MIT, GPL, Apache-2.0, and more).
 - `--help`: Display help information about the CLI.
 
 #### Example

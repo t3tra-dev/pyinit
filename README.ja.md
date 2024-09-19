@@ -57,7 +57,7 @@ Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v0.
 Expand-Archive -Path pyinit.zip -DestinationPath .
 ```
 
-以下の手順で`pyinit`を`PATH`に追加します：
+以下の手順で`pyinit`を`PATH`に追加します:
 
 1. 「このPC」を右クリックし、「プロパティ」を選択
 2. 「システムの詳細設定」をクリックし、「環境変数」を選択
@@ -65,7 +65,7 @@ Expand-Archive -Path pyinit.zip -DestinationPath .
 4. 「新規」をクリックし、`pyinit.exe`があるパスを追加
 5. すべてのウィンドウで「OK」をクリックして閉じる
 
-これでコマンドラインから`pyinit`が実行できるようになります：
+これでコマンドラインから`pyinit`が実行できるようになります:
 
 ```bash
 pyinit --help
@@ -81,26 +81,26 @@ pyinit --help
 
 ### ビルド手順
 
-1. リポジトリをクローンします：
+1. リポジトリをクローンします:
 
 ```bash
 git clone https://github.com/t3tra-dev/pyinit.git
 cd pyinit
 ```
 
-2. プロジェクトをビルドします：
+2. プロジェクトをビルドします:
 
 ```bash
 cargo build --release
 ```
 
-3. バイナリを`PATH`内のディレクトリに移動します：
+3. バイナリを`PATH`内のディレクトリに移動します:
 
 ```bash
 sudo mv target/release/pyinit /usr/local/bin/
 ```
 
-これで、`pyinit`が実行できるようになります：
+これで、`pyinit`が実行できるようになります:
 
 ```bash
 pyinit --help
@@ -121,24 +121,24 @@ pyinit [OPTIONS]
 - `--name`, `-n`: Pythonライブラリの名前を指定
 - `--description`, `-d`: ライブラリの説明を指定
 - `--author`, `-a`: 作者の名前を指定
-- `--license`, `-l`: ライセンスの種類を指定（MIT、GPL、Apache-2.0、またはcustom）
+- `--license`, `-l`: ライセンスの種類を指定(MIT、GPL、Apache-2.0、など)
 - `--help`: CLIのヘルプ情報を表示
 
 #### 使用例
 
-インタラクティブにPythonライブラリプロジェクトを作成するには、以下のコマンドを実行します：
+インタラクティブにPythonライブラリプロジェクトを作成するには、以下のコマンドを実行します:
 
 ```bash
 pyinit
 ```
 
-プロジェクト名や説明、作者、ライセンスを尋ねられるので、入力して進みます。非対話形式でプロジェクトを作成する場合は、コマンドライン引数を使用します：
+プロジェクト名や説明、作者、ライセンスを尋ねられるので、入力して進みます。非対話形式でプロジェクトを作成する場合は、コマンドライン引数を使用します:
 
 ```bash
 pyinit --name mylib --description "A Python library for awesome features" --author "John Doe" --license MIT
 ```
 
-これにより、以下のディレクトリ構造が生成されます：
+これにより、以下のディレクトリ構造が生成されます:
 
 ```
 mylib/
@@ -157,12 +157,12 @@ mylib/
 
 ## コントリビューティングとサポート
 
-`pyinit`への貢献は大歓迎です！以下の手順に従って貢献できます：
+`pyinit`への貢献は大歓迎です！以下の手順に従って貢献できます:
 
-1. リポジトリをフォークします：[https://github.com/t3tra-dev/pyinit](https://github.com/t3tra-dev/pyinit)
-2. フィーチャーブランチを作成します：`git checkout -b feature/your-feature`
-3. 変更をコミットします：`git commit -m 'Add a new feature'`
-4. ブランチをプッシュします：`git push origin feature/your-feature`
+1. リポジトリをフォークします: [https://github.com/t3tra-dev/pyinit](https://github.com/t3tra-dev/pyinit)
+2. フィーチャーブランチを作成します: `git checkout -b feature/your-feature`
+3. 変更をコミットします: `git commit -m 'Add a new feature'`
+4. ブランチをプッシュします: `git push origin feature/your-feature`
 5. プルリクエストを送信します。
 
 サポートや質問については、リポジトリの[Issuesセクション](https://github.com/t3tra-dev/pyinit/issues)に問題を報告してください。
