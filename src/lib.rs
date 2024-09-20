@@ -39,7 +39,7 @@ pub struct PyInit {
 }
 
 impl PyInit {
-    pub fn from_interaction_or_args(args: PyInitArgs) -> Result<Self> {
+    pub fn from_interaction_and_args(args: PyInitArgs) -> Result<Self> {
         let name = match args.name {
             Some(name) => name,
             None => interact::text_required("Enter the library name")?
