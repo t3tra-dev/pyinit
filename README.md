@@ -111,7 +111,8 @@ pyinit [OPTIONS]
 - `--description`, `-d`: Provide a description for the library.
 - `--author`, `-a`: Specify the author's name.
 - `--license`, `-l`: Choose the license type (MIT, GPL, Apache-2.0, and more).
-- `--help`: Display help information about the CLI.
+- `--help`, `-h`: Display help information (`-h` shows summary).
+- `--version`: Print version
 
 #### Example
 
