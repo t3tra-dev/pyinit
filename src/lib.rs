@@ -86,24 +86,24 @@ impl PyInit {
             year: util::current_year(),
             author: &self.author,
             license: self.license.as_ref().map(License::name).unwrap_or("")
-        }.render_in(&module_dir)?;
+        }.generate_in(&module_dir)?;
 
         SetupPy {
             name: &self.name,
             desc: self.description.as_deref().unwrap_or(""),
             author: &self.author,
             license: self.license.as_ref().map(License::name).unwrap_or("")
-        }.render_in(&project_dir)?;
+        }.generate_in(&project_dir)?;
 
         README {
             name: &self.name,
             desc: self.description.as_deref().unwrap_or("")
-        }.render_in(&project_dir)?;
+        }.generate_in(&project_dir)?;
 
         RequirementsText {
-        }.render_in(&project_dir)?;
+        }.generate_in(&project_dir)?;
 
-        if let Some(license) = self.license {            
+        if let Some(license) = self.license {
             fs::write(project_dir.join("LICENSE"), license.render_with(PackageInfo {
                 name: self.name.to_string(),
                 author: self.author.to_string()
