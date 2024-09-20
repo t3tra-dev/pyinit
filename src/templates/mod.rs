@@ -10,7 +10,7 @@ macro_rules! templates {
             }
             
             impl $(<$lt>)? $Struct $(<$lt>)? {
-                pub fn render_in(self, dir: impl AsRef<std::path::Path>) -> crate::Result<()> {
+                pub fn generate_in(self, dir: impl AsRef<std::path::Path>) -> crate::Result<()> {
                     std::fs::write(dir.as_ref().join($path), askama::Template::render(&self)?)?;
                     Ok(())
                 }
