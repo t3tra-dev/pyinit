@@ -22,7 +22,7 @@ pub struct PyInitArgs {
     #[arg(short = 'd')]
     description: Option<String>,
 
-    /// Library author's name"
+    /// Library author's name
     #[arg(short = 'a')]
     author: Option<AlphaNumeric>,
 
