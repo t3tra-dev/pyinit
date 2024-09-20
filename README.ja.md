@@ -111,7 +111,8 @@ pyinit [OPTIONS]
 - `--description`, `-d`: ライブラリの説明を指定
 - `--author`, `-a`: 作者の名前を指定
 - `--license`, `-l`: ライセンスの種類を指定(MIT、GPL、Apache-2.0、など)
-- `--help`: CLIのヘルプ情報を表示
+- `--help`, `-h`: CLIのヘルプ情報を表示(`-h`はサマリー)
+- `--version`: CLIのバージョンを表示
 
 #### 使用例
 
