@@ -35,7 +35,7 @@ pub struct PyInit {
     name: AlphaNumeric,
     description: Option<String>,
     author: AlphaNumeric,
-    license: License,
+    license: Option<License>,
 }
 
 impl PyInit {
@@ -60,12 +60,12 @@ impl PyInit {
         };
 
         let license = match args.license {
-            Some(a_builtin_license) => a_builtin_license.into(),
+            Some(a_builtin_license) => Some(a_builtin_license.into()),
             None => {
                 let options = [License::BUILTIN_NAMES, &["Other (custom)"]].concat();
                 match License::builtin(interact::select_one("Choose a license", &options)?) {
-                    Some(a_builtin_license) => a_builtin_license,
-                    None => License::custom(interact::text_required("Enter your custom license (optional)")?)
+                    Some(a_builtin_license) => Some(a_builtin_license),
+                    None => interact::text_optional("Enter your custom license (optional)")?.map(License::custom)
                 }
             }
         };
@@ -82,31 +82,33 @@ impl PyInit {
 
         InitPy {
             name: &self.name,
-            desc: self.description.as_deref().unwrap_or_default(),
+            desc: self.description.as_deref().unwrap_or(""),
             year: util::current_year(),
             author: &self.author,
-            license: self.license.name()
+            license: self.license.as_ref().map(License::name).unwrap_or("")
         }.render_in(&module_dir)?;
 
         SetupPy {
             name: &self.name,
-            desc: self.description.as_deref().unwrap_or_default(),
+            desc: self.description.as_deref().unwrap_or(""),
             author: &self.author,
-            license: self.license.name()
+            license: self.license.as_ref().map(License::name).unwrap_or("")
         }.render_in(&project_dir)?;
 
         README {
             name: &self.name,
-            desc: self.description.as_deref().unwrap_or_default()
+            desc: self.description.as_deref().unwrap_or("")
         }.render_in(&project_dir)?;
 
         RequirementsText {
         }.render_in(&project_dir)?;
 
-        fs::write(project_dir.join("LICENSE"), self.license.render_with(PackageInfo {
-            name: self.name.to_string(),
-            author: self.author.to_string()
-        })?)?;
+        if let Some(license) = self.license {            
+            fs::write(project_dir.join("LICENSE"), license.render_with(PackageInfo {
+                name: self.name.to_string(),
+                author: self.author.to_string()
+            })?)?;
+        }
 
         println!("Project files created successfully!");
 
