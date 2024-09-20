@@ -8,7 +8,7 @@ enum Repr {
 macro_rules! BuiltinLicense {
     ($( $path:literal as $Struct:ident # $doc:literal ),* $(,)?) => {
         #[derive(Clone, clap::ValueEnum)]
-        #[value(rename_all = "UPPER")]
+        #[value(rename_all = "verbatim")]
         pub enum BuiltinLicense {
             $(
                 #[doc = $doc]
