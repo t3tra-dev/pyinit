@@ -45,7 +45,7 @@ impl PyInit {
             None => interact::text_required("Enter the library name")?
         };
 
-        if util::is_available_name_on_pypi(&name)? {
+        if !util::is_available_name_on_pypi(&name)? {
             return Err(Error::LibraryNameTaken { name: name.to_string() })
         }
 
