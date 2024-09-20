@@ -1,3 +1,3 @@
-# {name}
+# {{ name }}
 
-{desc}
+{{ desc }}

@@ -20,10 +20,10 @@ def get_version(rel_path):
 
 
 setup(
-    name='{name}',
-    version=get_version("{name}/__init__.py"),
-    description="{desc}",
-    author='{author}',
+    name='{{ name }}',
+    version=get_version("{{ name }}/__init__.py"),
+    description="{{ desc }}",
+    author='{{ author }}',
     packages=find_packages(),
-    license='{license}'
+    license='{{ license }}'
 )
