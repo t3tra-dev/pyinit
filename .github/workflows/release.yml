@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release pyinit CLI
 
 on:
   push:
@@ -74,7 +74,8 @@ jobs:
         run: |
           mkdir -p dist
           zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip pyinit
-        - name: Archive the build output (Windows)
+
+      - name: Archive the build output (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         shell: pwsh
         run: |
@@ -92,10 +93,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download archive artifacts
+      - name: Download archive artifacts (Linux)
         uses: actions/download-artifact@v3
         with:
-          name: archive-*
+          name: archive-ubuntu-latest
+
+      - name: Download archive artifacts (macOS)
+        uses: actions/download-artifact@v3
+        with:
+          name: archive-macos-latest
+
+      - name: Download archive artifacts (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: archive-windows-latest
 
       - name: Move artifacts to dist folder
         run: |
