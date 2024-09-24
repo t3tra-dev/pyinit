@@ -18,11 +18,15 @@ const _: () = {
             input = input.trim();
 
             if input.is_empty() {
-                return Err(crate::Error::ArgValidation("it can't be empty"))
+                return Err(crate::Error::ArgValidation("it can't be empty"));
             }
 
-            if !input.chars().all(char::is_alphanumeric) {
-                return Err(crate::Error::ArgValidation("it can only have alphanumeric charactors"))
+            if input.starts_with('-') || input.ends_with('-') {
+                return Err(crate::Error::ArgValidation("the first and last characters can't be hyphens"));
+            }
+
+            if !input.chars().all(|c| c.is_alphanumeric() || c == '-') {
+                return Err(crate::Error::ArgValidation("it can only have alphanumeric characters or hyphens"));
             }
 
             Ok(AlphaNumeric(input.into()))
