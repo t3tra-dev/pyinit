@@ -49,68 +49,62 @@ jobs:
           name: build-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/pyinit${{ matrix.file_extension }}
 
-  archive:
-    needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            file_extension: ""
-          - os: macos-latest
-            file_extension: ""
-          - os: windows-latest
-            file_extension: ".exe"
+archive:
+  needs: build
+  runs-on: ${{ matrix.os }}
+  strategy:
+    matrix:
+      os: [ubuntu-latest, macos-latest, windows-latest]
+      include:
+        - os: ubuntu-latest
+          file_extension: ""
+        - os: macos-latest
+          file_extension: ""
+        - os: windows-latest
+          file_extension: ".exe"
 
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-${{ matrix.os }}
+  steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-${{ matrix.os }}
 
-      - name: Archive the build output (Linux/macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: |
-          mkdir -p dist
-          zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip pyinit
-
+    - name: Archive the build output (Linux/macOS)
+      if: ${{ matrix.os != 'windows-latest' }}
+      run: |
+        mkdir -p dist
+        zip -j dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip pyinit
       - name: Archive the build output (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path dist
-          Compress-Archive -Path "pyinit${{ matrix.file_extension }}" -DestinationPath "dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip"
+      if: ${{ matrix.os == 'windows-latest' }}
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path dist
+        Compress-Archive -Path "pyinit${{ matrix.file_extension }}" -DestinationPath "dist/pyinit-${{ matrix.os }}-${{ github.ref_name }}.zip"
 
-      - name: Upload archive artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: archive-${{ matrix.os }}
-          path: dist/*.zip
+    - name: Upload archive artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: archive-${{ matrix.os }}
+        path: dist/*.zip
 
-  release:
-    needs: archive
-    runs-on: ubuntu-latest
+release:
+  needs: archive
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Download archive artifacts (Linux)
-        uses: actions/download-artifact@v3
-        with:
-          name: archive-ubuntu-latest
+  steps:
+    - name: Download archive artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: archive-*
 
-      - name: Download archive artifacts (macOS)
-        uses: actions/download-artifact@v3
-        with:
-          name: archive-macos-latest
+    - name: Move artifacts to dist folder
+      run: |
+        mkdir -p dist
+        mv pyinit*.zip dist/
 
-      - name: Download archive artifacts (Windows)
-        uses: actions/download-artifact@v3
-        with:
-          name: archive-windows-latest
-
-      - name: Upload build artifacts as release assets
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload build artifacts as release assets
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
