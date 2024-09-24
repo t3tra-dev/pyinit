@@ -93,10 +93,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download archive artifacts
+      - name: Download archive artifacts (Linux)
         uses: actions/download-artifact@v3
         with:
-          name: archive-*
+          name: archive-ubuntu-latest
+
+      - name: Download archive artifacts (macOS)
+        uses: actions/download-artifact@v3
+        with:
+          name: archive-macos-latest
+
+      - name: Download archive artifacts (Windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: archive-windows-latest
 
       - name: Upload build artifacts as release assets
         uses: softprops/action-gh-release@v2
