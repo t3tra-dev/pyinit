@@ -1,4 +1,4 @@
-name: Build and Release pyinit CLI
+name: Build and Release
 
 on:
   push:
