@@ -19,8 +19,8 @@
 `pyinit`をLinuxにインストールするには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードし、バイナリを`PATH`にあるディレクトリに移動します。
 
 ```bash
-wget https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-linux-latest-v0.1.0.zip
-unzip pyinit-linux-latest-v0.1.0.zip
+wget https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-linux-latest-v1.0.0.zip
+unzip pyinit-linux-latest-v1.0.0.zip
 chmod +x pyinit
 sudo mv pyinit /usr/local/bin/
 ```
@@ -36,8 +36,8 @@ pyinit --help
 macOS向けに`pyinit`をインストールするには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードし、バイナリを`PATH`にあるディレクトリに移動します。
 
 ```bash
-curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-macos-latest-v0.1.0.zip
-unzip pyinit-macos-latest-v0.1.0.zip
+curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-macos-latest-v1.0.0.zip
+unzip pyinit-macos-latest-v1.0.0.zip
 chmod +x pyinit
 sudo mv pyinit /usr/local/bin/
 ```
@@ -53,7 +53,7 @@ pyinit --help
 Windowsで`pyinit`を使用するには、[リリースページ](https://github.com/t3tra-dev/pyinit/releases)から最新バイナリをダウンロードして解凍します。
 
 ```bash
-Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-windows-latest-v0.1.0.zip -OutFile pyinit.zip
+Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-windows-latest-v1.0.0.zip -OutFile pyinit.zip
 Expand-Archive -Path pyinit.zip -DestinationPath .
 ```
 

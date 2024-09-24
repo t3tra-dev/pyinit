@@ -19,8 +19,8 @@
 To install `pyinit` on Linux, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and move the binary to a directory in your `PATH`.
 
 ```bash
-wget https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-linux-latest-v0.1.0.zip
-unzip pyinit-linux-latest-v0.1.0.zip
+wget https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-linux-latest-v1.0.0.zip
+unzip pyinit-linux-latest-v1.0.0.zip
 chmod +x pyinit
 sudo mv pyinit /usr/local/bin/
 ```
@@ -36,8 +36,8 @@ pyinit --help
 For macOS, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and move the binary to your `PATH`.
 
 ```bash
-curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-macos-latest-v0.1.0.zip
-unzip pyinit-macos-latest-v0.1.0.zip
+curl -L -O https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-macos-latest-v1.0.0.zip
+unzip pyinit-macos-latest-v1.0.0.zip
 chmod +x pyinit
 sudo mv pyinit /usr/local/bin/
 ```
@@ -53,7 +53,7 @@ pyinit --help
 For Windows, download the latest release from the [releases page](https://github.com/t3tra-dev/pyinit/releases) and extract it:
 
 ```bash
-Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v0.1.0/pyinit-windows-latest-v0.1.0.zip -OutFile pyinit.zip
+Invoke-WebRequest -Uri https://github.com/t3tra-dev/pyinit/releases/download/v1.0.0/pyinit-windows-latest-v1.0.0.zip -OutFile pyinit.zip
 Expand-Archive -Path pyinit.zip -DestinationPath .
 ```
 
