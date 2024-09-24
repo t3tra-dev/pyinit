@@ -145,8 +145,6 @@ mylib/
 
 ライセンスに`custom`を選んだ場合、カスタムライセンステキストを入力するか、空白のままにすることができます。それ以外の場合は、選択したライセンスに基づいて`LICENSE`ファイルが自動的に生成されます。
 
-<!--
-
 ## コントリビューティングとサポート
 
 `pyinit`への貢献は大歓迎です！以下の手順に従って貢献できます:
@@ -159,7 +157,9 @@ mylib/
 
 サポートや質問については、リポジトリの[Issuesセクション](https://github.com/t3tra-dev/pyinit/issues)に問題を報告してください。
 
--->
+全てのコントリビューターに感謝しています！
+
+![pyinit Contributors](https://contrib.rocks/image?repo=t3tra-dev/pyinit)
 
 ---
 

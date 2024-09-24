@@ -145,8 +145,6 @@ mylib/
 
 When selecting `custom` as the license type, you'll be prompted to enter custom license text or leave it blank. Otherwise, the selected license will automatically populate the `LICENSE` file.
 
-<!--
-
 ## Contributing and Support
 
 We welcome contributions! Please follow these steps to contribute:
@@ -159,7 +157,9 @@ We welcome contributions! Please follow these steps to contribute:
 
 For any questions or support, feel free to open an issue in the repository's [Issues section](https://github.com/t3tra-dev/pyinit/issues).
 
--->
+thanks for all contributors!
+
+![pyinit Contributors](https://contrib.rocks/image?repo=t3tra-dev/pyinit)
 
 ---
 
