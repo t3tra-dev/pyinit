@@ -79,25 +79,14 @@ pyinit --help
 
 - [Rust](https://www.rust-lang.org/tools/install)がシステムにインストールされていること
 
-### ビルド手順
+### ビルド・インストール手順
 
-1. リポジトリをクローンします:
+リポジトリをクローンして `cargo install --path .` を実行してください:
 
 ```bash
 git clone https://github.com/t3tra-dev/pyinit.git
 cd pyinit
-```
-
-2. プロジェクトをビルドします:
-
-```bash
-cargo build --release
-```
-
-3. バイナリを`PATH`内のディレクトリに移動します:
-
-```bash
-sudo mv target/release/pyinit /usr/local/bin/
+cargo install --path .
 ```
 
 これで、`pyinit`が実行できるようになります:
@@ -118,11 +107,12 @@ pyinit [OPTIONS]
 
 #### オプション
 
-- `--name`, `-n`: Pythonライブラリの名前を指定
+- `--name`, `-n`: ライブラリの名前を指定
 - `--description`, `-d`: ライブラリの説明を指定
 - `--author`, `-a`: 作者の名前を指定
 - `--license`, `-l`: ライセンスの種類を指定(MIT、GPL、Apache-2.0、など)
-- `--help`: CLIのヘルプ情報を表示
+- `--help`, `-h`: CLIのヘルプ情報を表示(`-h`はサマリー)
+- `--version`: CLIのバージョンを表示
 
 #### 使用例
 
@@ -155,6 +145,8 @@ mylib/
 
 ライセンスに`custom`を選んだ場合、カスタムライセンステキストを入力するか、空白のままにすることができます。それ以外の場合は、選択したライセンスに基づいて`LICENSE`ファイルが自動的に生成されます。
 
+<!--
+
 ## コントリビューティングとサポート
 
 `pyinit`への貢献は大歓迎です！以下の手順に従って貢献できます:
@@ -167,6 +159,8 @@ mylib/
 
 サポートや質問については、リポジトリの[Issuesセクション](https://github.com/t3tra-dev/pyinit/issues)に問題を報告してください。
 
+-->
+
 ---
 
-`pyinit`はMITライセンスの下で提供されています。詳細については[LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE)ファイルをご覧ください。
+`pyinit`はMITライセンスの下で提供されています。詳細については[LICENSE](https://github.com/kanarus/pyinit/blob/main/LICENSE)ファイルをご覧ください。

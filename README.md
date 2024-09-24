@@ -79,25 +79,14 @@ To build `pyinit` from source locally, you need to have Rust installed.
 
 - Install [Rust](https://www.rust-lang.org/tools/install) on your system.
 
-### Build steps:
+### Build and Install:
 
-1. Clone the repository:
+Clone the repository and run `cargo install --path .`:
 
 ```bash
 git clone https://github.com/t3tra-dev/pyinit.git
 cd pyinit
-```
-
-2. Build the project:
-
-```bash
-cargo build --release
-```
-
-3. Move the binary to a directory in your `PATH`:
-
-```bash
-sudo mv target/release/pyinit /usr/local/bin/
+cargo install --path .
 ```
 
 Now you can run `pyinit`:
@@ -122,7 +111,8 @@ pyinit [OPTIONS]
 - `--description`, `-d`: Provide a description for the library.
 - `--author`, `-a`: Specify the author's name.
 - `--license`, `-l`: Choose the license type (MIT, GPL, Apache-2.0, and more).
-- `--help`: Display help information about the CLI.
+- `--help`, `-h`: Display help information (`-h` shows summary).
+- `--version`: Print version
 
 #### Example
 
@@ -155,6 +145,8 @@ mylib/
 
 When selecting `custom` as the license type, you'll be prompted to enter custom license text or leave it blank. Otherwise, the selected license will automatically populate the `LICENSE` file.
 
+<!--
+
 ## Contributing and Support
 
 We welcome contributions! Please follow these steps to contribute:
@@ -167,6 +159,8 @@ We welcome contributions! Please follow these steps to contribute:
 
 For any questions or support, feel free to open an issue in the repository's [Issues section](https://github.com/t3tra-dev/pyinit/issues).
 
+-->
+
 ---
 
-`pyinit` is licensed under the MIT License. See the [LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE) file for more details.
+`pyinit` is licensed under the MIT License. See the [LICENSE](https://github.com/kanarus/pyinit/blob/main/LICENSE) file for more details.
