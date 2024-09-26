@@ -163,4 +163,4 @@ thanks for all contributors!
 
 ---
 
-`pyinit` is licensed under the MIT License. See the [LICENSE](https://github.com/kanarus/pyinit/blob/main/LICENSE) file for more details.
+`pyinit` is licensed under the MIT License. See the [LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE) file for more details.
