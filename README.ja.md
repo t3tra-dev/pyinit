@@ -163,4 +163,4 @@ mylib/
 
 ---
 
-`pyinit`はMITライセンスの下で提供されています。詳細については[LICENSE](https://github.com/kanarus/pyinit/blob/main/LICENSE)ファイルをご覧ください。
+`pyinit`はMITライセンスの下で提供されています。詳細については[LICENSE](https://github.com/t3tra-dev/pyinit/blob/main/LICENSE)ファイルをご覧ください。
