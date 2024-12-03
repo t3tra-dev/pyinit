@@ -1,12 +1,12 @@
 pub fn is_available_name_on_pypi(name: &str) -> crate::Result<bool> {
-    let status = reqwest::blocking::get(format!("https://pypi.org/pypi/{name}/json"))?.status();
+    let status: reqwest::StatusCode = reqwest::blocking::get(format!("https://pypi.org/pypi/{name}/json"))?.status();
     Ok(status == reqwest::StatusCode::NOT_FOUND)
 }
 
 pub fn current_year() -> u16 {
     use chrono::Datelike;
 
-    let now = chrono::Utc::now();
+    let now: chrono::DateTime<chrono::Utc> = chrono::Utc::now();
     now.year() as u16
 }
 
@@ -25,7 +25,7 @@ const _: () = {
                 return Err(crate::Error::ArgValidation("the first and last characters can't be hyphens"));
             }
 
-            if !input.chars().all(|c| c.is_alphanumeric() || c == '-') {
+            if !input.chars().all(|c: char| c.is_alphanumeric() || c == '-') {
                 return Err(crate::Error::ArgValidation("it can only have alphanumeric characters or hyphens"));
             }
 

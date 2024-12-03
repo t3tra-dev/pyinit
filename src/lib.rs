@@ -40,7 +40,7 @@ pub struct PyInit {
 
 impl PyInit {
     pub fn from_interaction_and_args(args: PyInitArgs) -> Result<Self> {
-        let name = match args.name {
+        let name: AlphaNumeric = match args.name {
             Some(name) => name,
             None => interact::text_required("Enter the library name")?
         };
@@ -49,20 +49,20 @@ impl PyInit {
             return Err(Error::LibraryNameTaken { name: name.to_string() })
         }
 
-        let description = match args.description {
+        let description: Option<String> = match args.description {
             Some(description) => Some(description),
             None => interact::text_optional("Enter a description for the library (optional)")?
         };
 
-        let author = match args.author {
+        let author: AlphaNumeric = match args.author {
             Some(author) => author,
             None => interact::text_required("Enter the author's name")?
         };
 
-        let license = match args.license {
+        let license: Option<License> = match args.license {
             Some(a_builtin_license) => Some(a_builtin_license.into()),
             None => {
-                let options = [License::BUILTIN_NAMES, &["Other (custom)"]].concat();
+                let options: Vec<&str> = [License::BUILTIN_NAMES, &["Other (custom)"]].concat();
                 match License::builtin(interact::select_one("Choose a license", &options)?) {
                     Some(a_builtin_license) => Some(a_builtin_license),
                     None => interact::text_optional("Enter your custom license (optional)")?.map(License::custom)
@@ -74,10 +74,10 @@ impl PyInit {
     }
 
     pub fn run(self) -> Result<()> {
-        let project_dir = PathBuf::from_iter([".", &self.name]);
+        let project_dir: PathBuf = PathBuf::from_iter([".", &self.name]);
         fs::create_dir_all(&project_dir)?;
 
-        let module_dir = project_dir.join(&*self.name);
+        let module_dir: PathBuf = project_dir.join(&*self.name);
         fs::create_dir(&module_dir)?;
 
         InitPy {

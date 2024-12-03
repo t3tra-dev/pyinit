@@ -120,8 +120,8 @@ const fn const_name_of(path: &'static str) -> &'static str {
         panic!("unexpected non-ascii path")
     }
 
-    let bytes = path.as_bytes();
-    let mut i = path.len() - 1;
+    let bytes: &[u8] = path.as_bytes();
+    let mut i: usize = path.len() - 1;
     while i > 0 {
         if bytes[i] == b'/' {
             return unsafe {
